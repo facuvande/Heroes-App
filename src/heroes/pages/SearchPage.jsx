@@ -30,37 +30,43 @@ export const SearchPage = () => {
 
     return (
         <>
-            <h1>Search</h1>
-            <hr/>
-
+            <h1 className="mb-4">Search</h1>
             <div className="row">
-                <div className="col-5">
+                <div className="col-lg-5">
                     <h4>Searching</h4>
-                    <hr/>
-                    <form onSubmit={ onSearchSubmit }>
-                        <input type="text" placeholder="Search a hero" className="form-control" name="searchText" autoComplete="off" value={searchText} onChange={onInputChange}/>
-                        <button className="btn btn-outline-primary mt-1">Search</button>
+                    <form onSubmit={onSearchSubmit}>
+                        <div className="input-group">
+                            <input
+                                type="text"
+                                placeholder="Search a hero"
+                                className="form-control"
+                                name="searchText"
+                                autoComplete="off"
+                                value={searchText}
+                                onChange={onInputChange}
+                            />
+                            <button className="btn btn-outline-primary" type="submit">
+                                Search
+                            </button>
+                        </div>
                     </form>
                 </div>
 
-                <div className="col-7">
+                <div className="col-lg-7 mt-4 mt-lg-0">
                     <h4>Results</h4>
-                    <hr/>
-                    {/* {
-                        (q === '') 
-                            ? <div className="alert alert-primary">Search a hero</div>   
-                            : (heroes.length === 0) && <div className="alert alert-danger">No hero with <b>{q}</b></div>  
-                    } */}
-
-                    <div className="alert alert-primary" style={{ display: showSearch ? '' : 'none' }}>Search a hero</div>   
-                    <div className="alert alert-danger" style={{display: showError ? '' : 'none'}}>No hero with <b>{q}</b></div>  
-
-                    {
-                        heroes.map(hero => (
-                            <HeroCard key={hero.id} {...hero }/>
-                        ))
-                    }
-                    
+                    <div className={`alert alert-primary ${showSearch ? 'd-block' : 'd-none'}`}>
+                        Search a hero
+                    </div>
+                    <div className={`alert alert-danger ${showError ? 'd-block' : 'd-none'}`}>
+                        No hero with <b>{q}</b>
+                    </div>
+                    <div className="row">
+                        {heroes.map((hero) => (
+                            <div className="col-6 col-md-4 col-lg-3" key={hero.id}>
+                                <HeroCard {...hero} />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         </>
