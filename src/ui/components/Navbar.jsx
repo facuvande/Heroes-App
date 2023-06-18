@@ -1,12 +1,15 @@
 import { useContext } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../auth/context/AuthContext';
+import { useState } from 'react';
 
 
 export const Navbar = () => {
 
     const { user, logout } = useContext(AuthContext)
     const navigate = useNavigate()
+    const [isNavOpen, setIsNavOpen] = useState(false);
+
 
     const onLogout = () => { 
         logout()
@@ -16,9 +19,12 @@ export const Navbar = () => {
         });
     }
 
+    const toggleNav = () => {
+        setIsNavOpen(!isNavOpen);
+    }
+
     return (
-        <nav className="navbar navbar-expand-sm navbar-dark bg-dark p-2">
-            
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark p-2">
             <Link 
                 className="navbar-brand" 
                 to="/"
@@ -26,37 +32,54 @@ export const Navbar = () => {
                 Asociaciones
             </Link>
 
-            <div className="navbar-collapse">
-                <div className="navbar-nav">
+            <button 
+                className="navbar-toggler" 
+                type="button" 
+                onClick={toggleNav}
+            >
+                <span className="navbar-toggler-icon"></span>
+            </button>
 
-                    <NavLink 
-                        className={({isActive}) => `nav-item nav-link ${(isActive) ? 'active' : ''}`} 
-                        to="/marvel"
-                    >
-                        Marvel
-                    </NavLink>
-
-                    <NavLink 
-                        className={({isActive}) => `nav-item nav-link ${(isActive) ? 'active' : ''}`} 
-                        to="/dc"
-                    >
-                        DC
-                    </NavLink>
-
-                    <NavLink 
-                        className={({isActive}) => `nav-item nav-link ${(isActive) ? 'active' : ''}`} 
-                        to="/search"
-                    >
-                        Search
-                    </NavLink>
-
-                </div>
-            </div>
-
-            <div className="navbar-collapse collapse w-100 order-3 dual-collapse2 d-flex justify-content-end">
-                <ul className="navbar-nav ml-auto">
-                    <span className='nav-item nav-link text-primary'>{ user.name }</span>
-                    <button className='nav-item nav-link btn' onClick={onLogout}>Logout</button>
+            <div className={`collapse navbar-collapse ${isNavOpen ? 'show' : ''}`}>
+                <ul className="navbar-nav mr-auto">
+                    <li className="nav-item">
+                        <NavLink 
+                            className="nav-link" 
+                            activeClassName="active" 
+                            to="/marvel"
+                            onClick={toggleNav}
+                        >
+                            Marvel
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink 
+                            className="nav-link" 
+                            activeClassName="active" 
+                            to="/dc"
+                            onClick={toggleNav}
+                        >
+                            DC
+                        </NavLink>
+                    </li>
+                    <li className="nav-item">
+                        <NavLink 
+                            className="nav-link" 
+                            activeClassName="active" 
+                            to="/search"
+                            onClick={toggleNav}
+                        >
+                            Search
+                        </NavLink>
+                    </li>
+                </ul>
+                <ul className="navbar-nav">
+                    <li className="nav-item">
+                        <span className="nav-link text-primary">{user.name}</span>
+                    </li>
+                    <li className="nav-item">
+                        <button className="nav-link btn" onClick={onLogout}>Logout</button>
+                    </li>
                 </ul>
             </div>
         </nav>
